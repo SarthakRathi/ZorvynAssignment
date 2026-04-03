@@ -19,15 +19,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // 1. Find user in the database
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
-        // 2. Convert our Role Enum into a Spring Security Authority
-        // Spring Security expects roles to start with "ROLE_"
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole().name());
 
-        // 3. Return Spring Security's User object
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),

@@ -16,7 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity // Keeps @PreAuthorize working in your controllers
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
@@ -28,7 +28,7 @@ public class SecurityConfig {
                             .requestMatchers("/api/auth/register").permitAll() // Only allow anyone to register
                             .anyRequest().authenticated() // Everything else requires login
                     )
-                    .httpBasic(Customizer.withDefaults()); // <-- Simple Basic Authentication
+                    .httpBasic(Customizer.withDefaults());
 
             return http.build();
         } catch (Exception e) {

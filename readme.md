@@ -112,9 +112,9 @@ POST /api/auth/register
 
 ```json
 {
-    "username": "admin_user",
-    "password": "securepassword",
-    "role": "ADMIN"
+  "username": "admin_user",
+  "password": "securepassword",
+  "role": "ADMIN"
 }
 ```
 
@@ -138,11 +138,11 @@ POST /api/transactions
 
 ```json
 {
-    "amount": 5000.00,
-    "type": "INCOME",
-    "category": "Salary",
-    "date": "2026-04-03",
-    "description": "April Salary"
+  "amount": 5000.00,
+  "type": "INCOME",
+  "category": "Salary",
+  "date": "2026-04-03",
+  "description": "April Salary"
 }
 ```
 
@@ -150,12 +150,12 @@ POST /api/transactions
 
 ```json
 {
-    "id": 1,
-    "amount": 5000.00,
-    "type": "INCOME",
-    "category": "Salary",
-    "date": "2026-04-03",
-    "description": "April Salary"
+  "id": 1,
+  "amount": 5000.00,
+  "type": "INCOME",
+  "category": "Salary",
+  "date": "2026-04-03",
+  "description": "April Salary"
 }
 ```
 
@@ -179,14 +179,14 @@ GET /api/transactions
 
 ```json
 [
-    {
-        "id": 1,
-        "amount": 5000.00,
-        "type": "INCOME",
-        "category": "Salary",
-        "date": "2026-04-03",
-        "description": "April Salary"
-    }
+  {
+    "id": 1,
+    "amount": 5000.00,
+    "type": "INCOME",
+    "category": "Salary",
+    "date": "2026-04-03",
+    "description": "April Salary"
+  }
 ]
 ```
 
@@ -202,11 +202,11 @@ PUT /api/transactions/{id}
 
 ```json
 {
-    "amount": 5500.00,
-    "type": "INCOME",
-    "category": "Salary",
-    "date": "2026-04-03",
-    "description": "April Salary + Bonus"
+  "amount": 5500.00,
+  "type": "INCOME",
+  "category": "Salary",
+  "date": "2026-04-03",
+  "description": "April Salary + Bonus"
 }
 ```
 
@@ -236,15 +236,86 @@ GET /api/dashboard/summary
 
 ```json
 {
-    "totalIncome": 5000.00,
-    "totalExpense": 1500.00,
-    "netBalance": 3500.00,
-    "categoryWiseTotals": {
-        "Salary": 5000.00,
-        "Software Subscriptions": 1500.00
-    }
+  "totalIncome": 5000.00,
+  "totalExpense": 1500.00,
+  "netBalance": 3500.00,
+  "categoryWiseTotals": {
+    "Salary": 5000.00,
+    "Software Subscriptions": 1500.00
+  }
 }
 ```
+
+---
+
+### 4. User Management
+
+> **Note:** All endpoints in this section are strictly **Admin Only**.
+
+#### Get All Users
+
+```
+GET /api/users
+```
+
+**Response `200 OK`:**
+
+```json
+[
+    {
+        "id": 1,
+        "username": "admin_user",
+        "role": "ADMIN",
+        "status": "ACTIVE"
+    },
+    {
+        "id": 2,
+        "username": "intern_viewer",
+        "role": "VIEWER",
+        "status": "ACTIVE"
+    }
+]
+```
+
+---
+
+#### Update a User's Role or Status
+
+Use this endpoint to promote/demote users or lock them out of the system by setting their status to `INACTIVE`.
+
+```
+PUT /api/users/{id}
+```
+
+**Request Body:** *(Fields are optional; only include what you want to change)*
+
+```json
+{
+    "role": "ANALYST",
+    "status": "INACTIVE"
+}
+```
+
+**Response `200 OK`:**
+
+```json
+{
+    "id": 2,
+    "username": "intern_viewer",
+    "role": "ANALYST",
+    "status": "INACTIVE"
+}
+```
+
+---
+
+#### Delete a User
+
+```
+DELETE /api/users/{id}
+```
+
+**Response `204 No Content`**
 
 ---
 
@@ -272,9 +343,9 @@ This API is designed to fail predictably and safely. Below are real scenarios sh
 
 ```json
 {
-    "amount": -50.00,
-    "type": "EXPENSE",
-    "date": "2026-04-03"
+  "amount": -50.00,
+  "type": "EXPENSE",
+  "date": "2026-04-03"
 }
 ```
 
@@ -284,8 +355,8 @@ This API is designed to fail predictably and safely. Below are real scenarios sh
 
 ```json
 {
-    "amount": "Amount must be greater than zero",
-    "category": "Category is required"
+  "amount": "Amount must be greater than zero",
+  "category": "Category is required"
 }
 ```
 
@@ -301,6 +372,6 @@ This API is designed to fail predictably and safely. Below are real scenarios sh
 
 ```json
 {
-    "error": "Transaction not found with ID: 9999"
+  "error": "Transaction not found with ID: 9999"
 }
 ```
