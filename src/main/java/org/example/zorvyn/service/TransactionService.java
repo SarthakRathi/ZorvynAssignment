@@ -30,8 +30,28 @@ public class TransactionService {
         return mapToResponseDTO(savedTransaction);
     }
 
-    public List<TransactionResponseDTO> getAllTransactions() {
+    public TransactionResponseDTO updateTransaction(Long id, TransactionRequestDTO requestDTO) {
+        Transaction existingTransaction = transactionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Transaction not found with ID: " + id));
+
+        existingTransaction.setAmount(requestDTO.getAmount());
+        existingTransaction.setType(requestDTO.getType());
+        existingTransaction.setCategory(requestDTO.getCategory());
+        existingTransaction.setDate(requestDTO.getDate());
+        existingTransaction.setDescription(requestDTO.getDescription());
+
+        Transaction updatedTransaction = transactionRepository.save(existingTransaction);
+        return mapToResponseDTO(updatedTransaction);
+    }
+
+    public List<TransactionResponseDTO> getAllTransactions(String type, String category, String date) {
         return transactionRepository.findAll().stream()
+                // Filter by type if provided
+                .filter(t -> type == null || t.getType().name().equalsIgnoreCase(type))
+                // Filter by category if provided
+                .filter(t -> category == null || t.getCategory().equalsIgnoreCase(category))
+                // Filter by date if provided
+                .filter(t -> date == null || t.getDate().toString().equals(date))
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }

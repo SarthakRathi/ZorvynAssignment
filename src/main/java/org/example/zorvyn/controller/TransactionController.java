@@ -27,11 +27,23 @@ public class TransactionController {
         return new ResponseEntity<>(createdTransaction, HttpStatus.CREATED);
     }
 
-    // Viewers, Analysts, and Admins can view records
+    // Only Admins can update records
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<TransactionResponseDTO> updateTransaction(
+            @PathVariable Long id,
+            @Valid @RequestBody TransactionRequestDTO requestDTO) {
+        return ResponseEntity.ok(transactionService.updateTransaction(id, requestDTO));
+    }
+
+    // Viewers, Analysts, and Admins can view records (with optional filtering)
     @GetMapping
     @PreAuthorize("hasAnyRole('VIEWER', 'ANALYST', 'ADMIN')")
-    public ResponseEntity<List<TransactionResponseDTO>> getAllTransactions() {
-        return ResponseEntity.ok(transactionService.getAllTransactions());
+    public ResponseEntity<List<TransactionResponseDTO>> getAllTransactions(
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String date) {
+        return ResponseEntity.ok(transactionService.getAllTransactions(type, category, date));
     }
 
     // Viewers, Analysts, and Admins can view specific records
