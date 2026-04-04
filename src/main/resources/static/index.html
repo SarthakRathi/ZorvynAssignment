@@ -779,7 +779,7 @@
                 outputEl.style.color = response.ok ? '#4ade80' : '#f87171';
             } catch {
                 outputEl.innerText = data;
-                outputEl.style.color = '#4ade80';
+                outputEl.style.color = response.ok ? '#4ade80' : '#f87171';
             }
         } catch (error) {
             outputEl.innerText = "Network Error: " + error.message;

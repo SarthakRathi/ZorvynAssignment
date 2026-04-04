@@ -1,4 +1,4 @@
-package org.example.Zorvyn.exception;
+package org.example.zorvyn.exception;
 
 import org.example.zorvyn.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -32,5 +32,12 @@ public class GlobalExceptionHandler {
         Map<String, String> error = new HashMap<>();
         error.put("error", ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<Map<String, String>> handleUserAlreadyExists(UserAlreadyExistsException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT); // 409 Conflict
     }
 }
