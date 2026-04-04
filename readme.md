@@ -63,6 +63,55 @@ The application is designed to gracefully handle invalid states:
 
 ---
 
+## 📁 Project Structure
+
+```
+src/main/java/org/example/zorvyn
+├── config/                        # Configuration classes
+│   └── SecurityConfig.java        # Configures Basic Auth, CORS/CSRF, and route access rules
+│
+├── controller/                    # REST API endpoints (routing and HTTP handling only)
+│   ├── AuthController.java        # Handles public user registration (/api/auth/register)
+│   ├── DashboardController.java   # Exposes aggregated financial metrics (/api/dashboard)
+│   ├── TransactionController.java # Handles CRUD requests for financial records (/api/transactions)
+│   └── UserController.java        # Admin-only endpoints to manage users (/api/users)
+│
+├── dto/                           # Data Transfer Objects (isolates entities from the API layer)
+│   ├── request/                   # Incoming payloads with @Valid constraints
+│   │   ├── RegisterRequestDTO.java    # Validates new user registration inputs
+│   │   ├── TransactionRequestDTO.java # Validates incoming financial record data
+│   │   └── UserUpdateRequestDTO.java  # Validates role and status changes for users
+│   └── response/                  # Outgoing payloads (strips sensitive data like passwords)
+│       ├── TransactionResponseDTO.java # Formats transaction data sent back to the client
+│       └── UserResponseDTO.java        # Formats user data safely for API consumption
+│
+├── entity/                        # Database models and Enums mapped via JPA/Hibernate
+│   ├── Role.java                  # Enum for access tiers (VIEWER, ANALYST, ADMIN)
+│   ├── Transaction.java           # Maps to the 'transactions' table in Postgres
+│   ├── TransactionType.java       # Enum for record types (INCOME, EXPENSE)
+│   ├── User.java                  # Maps to the 'app_users' table in Postgres
+│   └── UserStatus.java            # Enum for account states (ACTIVE, INACTIVE)
+│
+├── exception/                     # Global error handling and custom exceptions
+│   ├── GlobalExceptionHandler.java    # Intercepts exceptions and formats them as clean JSON responses
+│   └── ResourceNotFoundException.java # Custom exception triggered when a DB query finds nothing
+│
+├── repository/                    # Spring Data JPA interfaces for database operations
+│   ├── TransactionRepository.java # Handles SQL generation for transaction records
+│   └── UserRepository.java        # Handles SQL generation for user accounts
+│
+├── security/                      # Custom security implementations
+│   └── CustomUserDetailsService.java  # Connects Spring Security to our database for auth
+│
+└── service/                       # Core business logic and transaction management
+    ├── AuthService.java           # Handles password hashing and saving new user registrations
+    ├── DashboardService.java      # Calculates and aggregates total income, expenses, and balances
+    ├── TransactionService.java    # Houses rules for creating, filtering, and updating transactions
+    └── UserService.java           # Houses logic for promoting, demoting, or locking user accounts
+```
+
+---
+
 ## ⚙️ Local Setup Instructions
 
 ### 1. Database Setup
@@ -112,9 +161,9 @@ POST /api/auth/register
 
 ```json
 {
-  "username": "admin_user",
-  "password": "securepassword",
-  "role": "ADMIN"
+    "username": "admin_user",
+    "password": "securepassword",
+    "role": "ADMIN"
 }
 ```
 
@@ -138,11 +187,11 @@ POST /api/transactions
 
 ```json
 {
-  "amount": 5000.00,
-  "type": "INCOME",
-  "category": "Salary",
-  "date": "2026-04-03",
-  "description": "April Salary"
+    "amount": 5000.00,
+    "type": "INCOME",
+    "category": "Salary",
+    "date": "2026-04-03",
+    "description": "April Salary"
 }
 ```
 
@@ -150,12 +199,12 @@ POST /api/transactions
 
 ```json
 {
-  "id": 1,
-  "amount": 5000.00,
-  "type": "INCOME",
-  "category": "Salary",
-  "date": "2026-04-03",
-  "description": "April Salary"
+    "id": 1,
+    "amount": 5000.00,
+    "type": "INCOME",
+    "category": "Salary",
+    "date": "2026-04-03",
+    "description": "April Salary"
 }
 ```
 
@@ -179,14 +228,14 @@ GET /api/transactions
 
 ```json
 [
-  {
-    "id": 1,
-    "amount": 5000.00,
-    "type": "INCOME",
-    "category": "Salary",
-    "date": "2026-04-03",
-    "description": "April Salary"
-  }
+    {
+        "id": 1,
+        "amount": 5000.00,
+        "type": "INCOME",
+        "category": "Salary",
+        "date": "2026-04-03",
+        "description": "April Salary"
+    }
 ]
 ```
 
@@ -202,11 +251,11 @@ PUT /api/transactions/{id}
 
 ```json
 {
-  "amount": 5500.00,
-  "type": "INCOME",
-  "category": "Salary",
-  "date": "2026-04-03",
-  "description": "April Salary + Bonus"
+    "amount": 5500.00,
+    "type": "INCOME",
+    "category": "Salary",
+    "date": "2026-04-03",
+    "description": "April Salary + Bonus"
 }
 ```
 
@@ -236,13 +285,13 @@ GET /api/dashboard/summary
 
 ```json
 {
-  "totalIncome": 5000.00,
-  "totalExpense": 1500.00,
-  "netBalance": 3500.00,
-  "categoryWiseTotals": {
-    "Salary": 5000.00,
-    "Software Subscriptions": 1500.00
-  }
+    "totalIncome": 5000.00,
+    "totalExpense": 1500.00,
+    "netBalance": 3500.00,
+    "categoryWiseTotals": {
+        "Salary": 5000.00,
+        "Software Subscriptions": 1500.00
+    }
 }
 ```
 
@@ -343,9 +392,9 @@ This API is designed to fail predictably and safely. Below are real scenarios sh
 
 ```json
 {
-  "amount": -50.00,
-  "type": "EXPENSE",
-  "date": "2026-04-03"
+    "amount": -50.00,
+    "type": "EXPENSE",
+    "date": "2026-04-03"
 }
 ```
 
@@ -355,8 +404,8 @@ This API is designed to fail predictably and safely. Below are real scenarios sh
 
 ```json
 {
-  "amount": "Amount must be greater than zero",
-  "category": "Category is required"
+    "amount": "Amount must be greater than zero",
+    "category": "Category is required"
 }
 ```
 
