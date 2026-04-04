@@ -1,5 +1,7 @@
 # Finance Data Processing and Access Control Backend
 
+> 🚀 **Live Demo:** [**zorvynassignment-production-1108.up.railway.app**](https://zorvynassignment-production-1108.up.railway.app/) — Check out the live deployment of this project here.
+
 A robust, secure Spring Boot REST API for managing financial records and generating dashboard analytics.
 
 This project was built to demonstrate clean backend architecture, strict role-based access control (RBAC), efficient data aggregation, and resilient error handling.
@@ -161,9 +163,9 @@ POST /api/auth/register
 
 ```json
 {
-  "username": "admin_user",
-  "password": "securepassword",
-  "role": "ADMIN"
+    "username": "admin_user",
+    "password": "securepassword",
+    "role": "ADMIN"
 }
 ```
 
@@ -187,11 +189,11 @@ POST /api/transactions
 
 ```json
 {
-  "amount": 5000.00,
-  "type": "INCOME",
-  "category": "Salary",
-  "date": "2026-04-03",
-  "description": "April Salary"
+    "amount": 5000.00,
+    "type": "INCOME",
+    "category": "Salary",
+    "date": "2026-04-03",
+    "description": "April Salary"
 }
 ```
 
@@ -199,12 +201,12 @@ POST /api/transactions
 
 ```json
 {
-  "id": 1,
-  "amount": 5000.00,
-  "type": "INCOME",
-  "category": "Salary",
-  "date": "2026-04-03",
-  "description": "April Salary"
+    "id": 1,
+    "amount": 5000.00,
+    "type": "INCOME",
+    "category": "Salary",
+    "date": "2026-04-03",
+    "description": "April Salary"
 }
 ```
 
@@ -251,12 +253,12 @@ GET /api/transactions/{id}
 
 ```json
 {
-    "id": 1,
-    "amount": 5000.00,
-    "type": "INCOME",
-    "category": "Salary",
-    "date": "2026-04-03",
-    "description": "April Salary"
+  "id": 1,
+  "amount": 5000.00,
+  "type": "INCOME",
+  "category": "Salary",
+  "date": "2026-04-03",
+  "description": "April Salary"
 }
 ```
 
@@ -272,11 +274,11 @@ PUT /api/transactions/{id}
 
 ```json
 {
-    "amount": 5500.00,
-    "type": "INCOME",
-    "category": "Salary",
-    "date": "2026-04-03",
-    "description": "April Salary + Bonus"
+  "amount": 5500.00,
+  "type": "INCOME",
+  "category": "Salary",
+  "date": "2026-04-03",
+  "description": "April Salary + Bonus"
 }
 ```
 
@@ -306,13 +308,13 @@ GET /api/dashboard/summary
 
 ```json
 {
-    "totalIncome": 5000.00,
-    "totalExpense": 1500.00,
-    "netBalance": 3500.00,
-    "categoryWiseTotals": {
-        "Salary": 5000.00,
-        "Software Subscriptions": 1500.00
-    }
+  "totalIncome": 5000.00,
+  "totalExpense": 1500.00,
+  "netBalance": 3500.00,
+  "categoryWiseTotals": {
+    "Salary": 5000.00,
+    "Software Subscriptions": 1500.00
+  }
 }
 ```
 
@@ -332,18 +334,18 @@ GET /api/users
 
 ```json
 [
-    {
-        "id": 1,
-        "username": "admin_user",
-        "role": "ADMIN",
-        "status": "ACTIVE"
-    },
-    {
-        "id": 2,
-        "username": "intern_viewer",
-        "role": "VIEWER",
-        "status": "ACTIVE"
-    }
+  {
+    "id": 1,
+    "username": "admin_user",
+    "role": "ADMIN",
+    "status": "ACTIVE"
+  },
+  {
+    "id": 2,
+    "username": "intern_viewer",
+    "role": "VIEWER",
+    "status": "ACTIVE"
+  }
 ]
 ```
 
@@ -359,10 +361,10 @@ GET /api/users/{id}
 
 ```json
 {
-    "id": 1,
-    "username": "admin_user",
-    "role": "ADMIN",
-    "status": "ACTIVE"
+  "id": 1,
+  "username": "admin_user",
+  "role": "ADMIN",
+  "status": "ACTIVE"
 }
 ```
 
@@ -380,8 +382,8 @@ PUT /api/users/{id}
 
 ```json
 {
-    "role": "ANALYST",
-    "status": "INACTIVE"
+  "role": "ANALYST",
+  "status": "INACTIVE"
 }
 ```
 
@@ -389,10 +391,10 @@ PUT /api/users/{id}
 
 ```json
 {
-    "id": 2,
-    "username": "intern_viewer",
-    "role": "ANALYST",
-    "status": "INACTIVE"
+  "id": 2,
+  "username": "intern_viewer",
+  "role": "ANALYST",
+  "status": "INACTIVE"
 }
 ```
 
@@ -432,9 +434,9 @@ This API is designed to fail predictably and safely. Below are real scenarios sh
 
 ```json
 {
-    "amount": -50.00,
-    "type": "EXPENSE",
-    "date": "2026-04-03"
+  "amount": -50.00,
+  "type": "EXPENSE",
+  "date": "2026-04-03"
 }
 ```
 
@@ -444,8 +446,8 @@ This API is designed to fail predictably and safely. Below are real scenarios sh
 
 ```json
 {
-    "amount": "Amount must be greater than zero",
-    "category": "Category is required"
+  "amount": "Amount must be greater than zero",
+  "category": "Category is required"
 }
 ```
 
@@ -461,6 +463,6 @@ This API is designed to fail predictably and safely. Below are real scenarios sh
 
 ```json
 {
-    "error": "Transaction not found with ID: 9999"
+  "error": "Transaction not found with ID: 9999"
 }
 ```
