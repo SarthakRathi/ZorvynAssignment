@@ -161,9 +161,9 @@ POST /api/auth/register
 
 ```json
 {
-    "username": "admin_user",
-    "password": "securepassword",
-    "role": "ADMIN"
+  "username": "admin_user",
+  "password": "securepassword",
+  "role": "ADMIN"
 }
 ```
 
@@ -187,11 +187,11 @@ POST /api/transactions
 
 ```json
 {
-    "amount": 5000.00,
-    "type": "INCOME",
-    "category": "Salary",
-    "date": "2026-04-03",
-    "description": "April Salary"
+  "amount": 5000.00,
+  "type": "INCOME",
+  "category": "Salary",
+  "date": "2026-04-03",
+  "description": "April Salary"
 }
 ```
 
@@ -199,12 +199,12 @@ POST /api/transactions
 
 ```json
 {
-    "id": 1,
-    "amount": 5000.00,
-    "type": "INCOME",
-    "category": "Salary",
-    "date": "2026-04-03",
-    "description": "April Salary"
+  "id": 1,
+  "amount": 5000.00,
+  "type": "INCOME",
+  "category": "Salary",
+  "date": "2026-04-03",
+  "description": "April Salary"
 }
 ```
 
@@ -228,15 +228,36 @@ GET /api/transactions
 
 ```json
 [
-    {
-        "id": 1,
-        "amount": 5000.00,
-        "type": "INCOME",
-        "category": "Salary",
-        "date": "2026-04-03",
-        "description": "April Salary"
-    }
+  {
+    "id": 1,
+    "amount": 5000.00,
+    "type": "INCOME",
+    "category": "Salary",
+    "date": "2026-04-03",
+    "description": "April Salary"
+  }
 ]
+```
+
+---
+
+#### Get a Transaction by ID *(Viewer, Analyst, Admin)*
+
+```
+GET /api/transactions/{id}
+```
+
+**Response `200 OK`:**
+
+```json
+{
+    "id": 1,
+    "amount": 5000.00,
+    "type": "INCOME",
+    "category": "Salary",
+    "date": "2026-04-03",
+    "description": "April Salary"
+}
 ```
 
 ---
@@ -324,6 +345,25 @@ GET /api/users
         "status": "ACTIVE"
     }
 ]
+```
+
+---
+
+#### Get a User by ID *(Admin Only)*
+
+```
+GET /api/users/{id}
+```
+
+**Response `200 OK`:**
+
+```json
+{
+    "id": 1,
+    "username": "admin_user",
+    "role": "ADMIN",
+    "status": "ACTIVE"
+}
 ```
 
 ---
@@ -421,6 +461,6 @@ This API is designed to fail predictably and safely. Below are real scenarios sh
 
 ```json
 {
-  "error": "Transaction not found with ID: 9999"
+    "error": "Transaction not found with ID: 9999"
 }
 ```

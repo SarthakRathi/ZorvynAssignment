@@ -25,8 +25,10 @@ public class SecurityConfig {
             http
                     .csrf(AbstractHttpConfigurer::disable)
                     .authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/api/auth/register").permitAll() // Only allow anyone to register
-                            .anyRequest().authenticated() // Everything else requires login
+                            // Allow anyone to load the UI and register a user
+                            .requestMatchers("/", "/index.html", "/api/auth/register").permitAll()
+                            // Everything else (the actual API data) requires login
+                            .anyRequest().authenticated()
                     )
                     .httpBasic(Customizer.withDefaults());
 

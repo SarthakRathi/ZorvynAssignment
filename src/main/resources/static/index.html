@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Finance API Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; line-height: 1.6; }
+        section { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; background: #f9f9f9; border-radius: 5px; }
+        h1, h2, h3 { margin-top: 0; }
+        .api-block { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; background: #fff; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .auth-box { display: flex; gap: 10px; margin-bottom: 10px; padding: 10px; background: #fff3e0; border: 1px solid #ffb74d; border-radius: 4px; }
+        .auth-box input { margin: 0; }
+        .auth-box::before { content: "🔐 Auth Required:"; font-weight: bold; font-size: 0.9em; display: flex; align-items: center; white-space: nowrap; }
+        input, select, button { margin: 5px 0; padding: 8px; width: 100%; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        button { background: #0056b3; color: #fff; border: none; cursor: pointer; font-weight: bold; padding: 10px; }
+        button:hover { background: #004494; }
+        pre { background: #1e1e1e; color: #00ff00; padding: 15px; overflow-x: auto; min-height: 50px; border-radius: 4px; }
+        .url-display { font-family: monospace; background: #e3f2fd; color: #0d47a1; padding: 10px; display: block; border-left: 4px solid #1976d2; word-break: break-all; margin-bottom: 0; }
+        .payload-display { font-family: monospace; background: #f4f4f4; color: #333; padding: 10px; display: block; margin-bottom: 15px; border-left: 4px solid #4caf50; font-size: 0.9em; white-space: pre-wrap; margin-top: 0; border-top: 1px dashed #ccc; }
+    </style>
+</head>
+<body>
+
+<!-- 1. PERSONAL DETAILS -->
+<section>
+    <h2>👨‍💻 Developer Profile</h2>
+    <p><strong>Name:</strong> Your Name Here</p>
+    <p><strong>Email:</strong> your.email@example.com</p>
+    <p><strong>Resume:</strong> <a href="#" target="_blank">Link to Resume</a></p>
+</section>
+
+<!-- 2. API ENDPOINTS -->
+<h2>🚀 API Endpoints Testing Console</h2>
+<p><em>Use the URLs and Payload specs provided below to test directly via Postman, or use the interactive forms to test right here in the browser!</em></p>
+
+<!-- AUTHENTICATION API -->
+<section>
+    <h3>1. Authentication</h3>
+    <div class="api-block">
+        <h4>Register User (Public)</h4>
+        <span class="url-display">POST https://zorvynassignment-production-1108.up.railway.app/api/auth/register</span>
+        <div class="payload-display"><strong>Headers:</strong>
+            Content-Type: application/json
+
+            <strong>Body:</strong>
+            {
+            "username": "string",
+            "password": "string",
+            "role": "VIEWER" // Options: VIEWER, ANALYST, ADMIN
+            }</div>
+
+        <input type="text" id="regUser" placeholder="New Username">
+        <input type="password" id="regPass" placeholder="New Password">
+        <select id="regRole">
+            <option value="VIEWER">VIEWER</option>
+            <option value="ANALYST">ANALYST</option>
+            <option value="ADMIN">ADMIN</option>
+        </select>
+        <button onclick="registerUser()">Send Request</button>
+        <pre id="out-register">Output will appear here...</pre>
+    </div>
+</section>
+
+<!-- DASHBOARD API -->
+<section>
+    <h3>2. Dashboard</h3>
+    <div class="api-block">
+        <h4>Get Summary</h4>
+        <span class="url-display">GET https://zorvynassignment-production-1108.up.railway.app/api/dashboard/summary</span>
+        <div class="payload-display"><strong>Headers:</strong>
+            Authorization: Basic &lt;base64_credentials&gt;
+
+            <strong>Body:</strong> None</div>
+
+        <div class="auth-box">
+            <input type="text" id="user-dash" placeholder="Username (Analyst/Admin)">
+            <input type="password" id="pass-dash" placeholder="Password">
+        </div>
+
+        <button onclick="getDashboard()">Send Request</button>
+        <pre id="out-dashboard">Output will appear here...</pre>
+    </div>
+</section>
+
+<!-- TRANSACTIONS API -->
+<section>
+    <h3>3. Transactions</h3>
+
+    <div class="api-block">
+        <h4>Get All Transactions (With Optional Filters)</h4>
+        <span class="url-display">GET https://zorvynassignment-production-1108.up.railway.app/api/transactions?type={type}&category={category}&date={date}</span>
+        <div class="payload-display"><strong>Headers:</strong>
+            Authorization: Basic &lt;base64_credentials&gt;
+
+            <strong>Body:</strong> None</div>
+
+        <div class="auth-box">
+            <input type="text" id="user-gettx" placeholder="Username (Any Role)">
+            <input type="password" id="pass-gettx" placeholder="Password">
+        </div>
+
+        <select id="getTxType">
+            <option value="">-- Any Type --</option>
+            <option value="INCOME">INCOME</option>
+            <option value="EXPENSE">EXPENSE</option>
+        </select>
+        <input type="text" id="getTxCategory" placeholder="Category (e.g., Salary) (Optional)">
+        <input type="date" id="getTxDate" title="Filter by Date (Optional)">
+        <button onclick="getTransactions()">Send Request</button>
+        <pre id="out-gettx">Output will appear here...</pre>
+    </div>
+
+    <div class="api-block">
+        <h4>Get Transaction By ID</h4>
+        <span class="url-display">GET https://zorvynassignment-production-1108.up.railway.app/api/transactions/{id}</span>
+        <div class="payload-display"><strong>Headers:</strong>
+            Authorization: Basic &lt;base64_credentials&gt;
+
+            <strong>Body:</strong> None</div>
+
+        <div class="auth-box">
+            <input type="text" id="user-gettxid" placeholder="Username (Any Role)">
+            <input type="password" id="pass-gettxid" placeholder="Password">
+        </div>
+
+        <input type="number" id="getTxId" placeholder="Transaction ID">
+        <button onclick="getTransactionById()">Send Request</button>
+        <pre id="out-gettxid">Output will appear here...</pre>
+    </div>
+
+    <div class="api-block">
+        <h4>Create Transaction</h4>
+        <span class="url-display">POST https://zorvynassignment-production-1108.up.railway.app/api/transactions</span>
+        <div class="payload-display"><strong>Headers:</strong>
+            Content-Type: application/json
+            Authorization: Basic &lt;base64_credentials&gt;
+
+            <strong>Body:</strong>
+            {
+            "amount": 5000.00,
+            "type": "INCOME", // Options: INCOME, EXPENSE
+            "category": "Salary",
+            "date": "2026-04-04",
+            "description": "Optional description string"
+            }</div>
+
+        <div class="auth-box">
+            <input type="text" id="user-createtx" placeholder="Username (Admin Only)">
+            <input type="password" id="pass-createtx" placeholder="Password">
+        </div>
+
+        <input type="number" id="txAmount" placeholder="Amount (e.g., 5000)">
+        <select id="txType">
+            <option value="INCOME">INCOME</option>
+            <option value="EXPENSE">EXPENSE</option>
+        </select>
+        <input type="text" id="txCategory" placeholder="Category">
+        <input type="date" id="txDate">
+        <input type="text" id="txDesc" placeholder="Description">
+        <button onclick="createTransaction()">Send Request</button>
+        <pre id="out-createtx">Output will appear here...</pre>
+    </div>
+
+    <div class="api-block">
+        <h4>Update Transaction</h4>
+        <span class="url-display">PUT https://zorvynassignment-production-1108.up.railway.app/api/transactions/{id}</span>
+        <div class="payload-display"><strong>Headers:</strong>
+            Content-Type: application/json
+            Authorization: Basic &lt;base64_credentials&gt;
+
+            <strong>Body:</strong>
+            {
+            "amount": 5500.00,
+            "type": "INCOME", // Options: INCOME, EXPENSE
+            "category": "Salary",
+            "date": "2026-04-04",
+            "description": "Updated description string"
+            }</div>
+
+        <div class="auth-box">
+            <input type="text" id="user-updtx" placeholder="Username (Admin Only)">
+            <input type="password" id="pass-updtx" placeholder="Password">
+        </div>
+
+        <input type="number" id="updTxId" placeholder="Transaction ID to update">
+        <input type="number" id="updTxAmount" placeholder="New Amount (e.g., 5500)">
+        <select id="updTxType">
+            <option value="INCOME">INCOME</option>
+            <option value="EXPENSE">EXPENSE</option>
+        </select>
+        <input type="text" id="updTxCategory" placeholder="New Category">
+        <input type="date" id="updTxDate">
+        <input type="text" id="updTxDesc" placeholder="New Description">
+        <button onclick="updateTransaction()">Send Request</button>
+        <pre id="out-updtx">Output will appear here...</pre>
+    </div>
+
+    <div class="api-block">
+        <h4>Delete Transaction</h4>
+        <span class="url-display">DELETE https://zorvynassignment-production-1108.up.railway.app/api/transactions/{id}</span>
+        <div class="payload-display"><strong>Headers:</strong>
+            Authorization: Basic &lt;base64_credentials&gt;
+
+            <strong>Body:</strong> None</div>
+
+        <div class="auth-box">
+            <input type="text" id="user-deltx" placeholder="Username (Admin Only)">
+            <input type="password" id="pass-deltx" placeholder="Password">
+        </div>
+
+        <input type="number" id="delTxId" placeholder="Transaction ID to delete">
+        <button onclick="deleteTransaction()">Send Request</button>
+        <pre id="out-deltx">Output will appear here...</pre>
+    </div>
+</section>
+
+<!-- USERS API -->
+<section>
+    <h3>4. User Management</h3>
+
+    <div class="api-block">
+        <h4>Get All Users</h4>
+        <span class="url-display">GET https://zorvynassignment-production-1108.up.railway.app/api/users</span>
+        <div class="payload-display"><strong>Headers:</strong>
+            Authorization: Basic &lt;base64_credentials&gt;
+
+            <strong>Body:</strong> None</div>
+
+        <div class="auth-box">
+            <input type="text" id="user-getusers" placeholder="Username (Admin Only)">
+            <input type="password" id="pass-getusers" placeholder="Password">
+        </div>
+
+        <button onclick="getUsers()">Send Request</button>
+        <pre id="out-getusers">Output will appear here...</pre>
+    </div>
+
+    <div class="api-block">
+        <h4>Get User By ID</h4>
+        <span class="url-display">GET https://zorvynassignment-production-1108.up.railway.app/api/users/{id}</span>
+        <div class="payload-display"><strong>Headers:</strong>
+            Authorization: Basic &lt;base64_credentials&gt;
+
+            <strong>Body:</strong> None</div>
+
+        <div class="auth-box">
+            <input type="text" id="user-getuserid" placeholder="Username (Admin Only)">
+            <input type="password" id="pass-getuserid" placeholder="Password">
+        </div>
+
+        <input type="number" id="getUserId" placeholder="User ID">
+        <button onclick="getUserById()">Send Request</button>
+        <pre id="out-getuserid">Output will appear here...</pre>
+    </div>
+
+    <div class="api-block">
+        <h4>Update User Status/Role</h4>
+        <span class="url-display">PUT https://zorvynassignment-production-1108.up.railway.app/api/users/{id}</span>
+        <div class="payload-display"><strong>Headers:</strong>
+            Content-Type: application/json
+            Authorization: Basic &lt;base64_credentials&gt;
+
+            <strong>Body: (All fields optional, send only what you want to change)</strong>
+            {
+            "role": "ANALYST", // Options: VIEWER, ANALYST, ADMIN
+            "status": "INACTIVE" // Options: ACTIVE, INACTIVE
+            }</div>
+
+        <div class="auth-box">
+            <input type="text" id="user-updateuser" placeholder="Username (Admin Only)">
+            <input type="password" id="pass-updateuser" placeholder="Password">
+        </div>
+
+        <input type="number" id="updateUserId" placeholder="User ID to update">
+        <select id="updateUserRole">
+            <option value="">-- Don't Change Role --</option>
+            <option value="VIEWER">VIEWER</option>
+            <option value="ANALYST">ANALYST</option>
+            <option value="ADMIN">ADMIN</option>
+        </select>
+        <select id="updateUserStatus">
+            <option value="">-- Don't Change Status --</option>
+            <option value="ACTIVE">ACTIVE</option>
+            <option value="INACTIVE">INACTIVE</option>
+        </select>
+        <button onclick="updateUser()">Send Request</button>
+        <pre id="out-updateuser">Output will appear here...</pre>
+    </div>
+
+    <div class="api-block">
+        <h4>Delete User</h4>
+        <span class="url-display">DELETE https://zorvynassignment-production-1108.up.railway.app/api/users/{id}</span>
+        <div class="payload-display"><strong>Headers:</strong>
+            Authorization: Basic &lt;base64_credentials&gt;
+
+            <strong>Body:</strong> None</div>
+
+        <div class="auth-box">
+            <input type="text" id="user-deluser" placeholder="Username (Admin Only)">
+            <input type="password" id="pass-deluser" placeholder="Password">
+        </div>
+
+        <input type="number" id="delUserId" placeholder="User ID to delete">
+        <button onclick="removeUser()">Send Request</button>
+        <pre id="out-deluser">Output will appear here...</pre>
+    </div>
+</section>
+
+<script>
+    // --- Core API Fetch Wrapper ---
+    async function callApi(url, method, body, outputElementId, userElementId, passElementId) {
+        const outputEl = document.getElementById(outputElementId);
+        outputEl.innerText = "Loading...";
+
+        const headers = { 'Content-Type': 'application/json' };
+
+        if (userElementId && passElementId) {
+            const user = document.getElementById(userElementId).value;
+            const pass = document.getElementById(passElementId).value;
+
+            if (!user || !pass) {
+                outputEl.innerText = "⚠️ Error: Please fill in the Username and Password fields above for this request.";
+                return;
+            }
+            headers['Authorization'] = 'Basic ' + btoa(user + ":" + pass);
+        }
+
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: headers,
+                body: body ? JSON.stringify(body) : null
+            });
+
+            if (response.status === 204) {
+                outputEl.innerText = "Success: 204 No Content";
+                return;
+            }
+
+            const data = await response.text();
+            try {
+                outputEl.innerText = JSON.stringify(JSON.parse(data), null, 2);
+            } catch {
+                outputEl.innerText = data;
+            }
+        } catch (error) {
+            outputEl.innerText = "Network Error: " + error.message;
+        }
+    }
+
+    // --- API Functions ---
+    function registerUser() {
+        const body = {
+            username: document.getElementById('regUser').value,
+            password: document.getElementById('regPass').value,
+            role: document.getElementById('regRole').value
+        };
+        callApi('/api/auth/register', 'POST', body, 'out-register');
+    }
+
+    function getDashboard() {
+        callApi('/api/dashboard/summary', 'GET', null, 'out-dashboard', 'user-dash', 'pass-dash');
+    }
+
+    function getTransactions() {
+        let url = '/api/transactions?';
+        const type = document.getElementById('getTxType').value;
+        const category = document.getElementById('getTxCategory').value;
+        const date = document.getElementById('getTxDate').value;
+
+        if (type) url += `type=${type}&`;
+        if (category) url += `category=${category}&`;
+        if (date) url += `date=${date}&`;
+
+        if(url.endsWith('?') || url.endsWith('&')) {
+            url = url.slice(0, -1);
+        }
+
+        callApi(url, 'GET', null, 'out-gettx', 'user-gettx', 'pass-gettx');
+    }
+
+    function getTransactionById() {
+        const id = document.getElementById('getTxId').value;
+        if(!id) {
+            document.getElementById('out-gettxid').innerText = "⚠️ Error: Please enter a Transaction ID.";
+            return;
+        }
+        callApi(`/api/transactions/${id}`, 'GET', null, 'out-gettxid', 'user-gettxid', 'pass-gettxid');
+    }
+
+    function createTransaction() {
+        const body = {
+            amount: parseFloat(document.getElementById('txAmount').value),
+            type: document.getElementById('txType').value,
+            category: document.getElementById('txCategory').value,
+            date: document.getElementById('txDate').value,
+            description: document.getElementById('txDesc').value
+        };
+        callApi('/api/transactions', 'POST', body, 'out-createtx', 'user-createtx', 'pass-createtx');
+    }
+
+    function updateTransaction() {
+        const id = document.getElementById('updTxId').value;
+        if(!id) {
+            document.getElementById('out-updtx').innerText = "⚠️ Error: Please enter a Transaction ID.";
+            return;
+        }
+        const body = {
+            amount: parseFloat(document.getElementById('updTxAmount').value),
+            type: document.getElementById('updTxType').value,
+            category: document.getElementById('updTxCategory').value,
+            date: document.getElementById('updTxDate').value,
+            description: document.getElementById('updTxDesc').value
+        };
+        callApi(`/api/transactions/${id}`, 'PUT', body, 'out-updtx', 'user-updtx', 'pass-updtx');
+    }
+
+    function deleteTransaction() {
+        const id = document.getElementById('delTxId').value;
+        if(!id) {
+            document.getElementById('out-deltx').innerText = "⚠️ Error: Please enter a Transaction ID.";
+            return;
+        }
+        callApi(`/api/transactions/${id}`, 'DELETE', null, 'out-deltx', 'user-deltx', 'pass-deltx');
+    }
+
+    function getUsers() {
+        callApi('/api/users', 'GET', null, 'out-getusers', 'user-getusers', 'pass-getusers');
+    }
+
+    function getUserById() {
+        const id = document.getElementById('getUserId').value;
+        if(!id) {
+            document.getElementById('out-getuserid').innerText = "⚠️ Error: Please enter a User ID.";
+            return;
+        }
+        callApi(`/api/users/${id}`, 'GET', null, 'out-getuserid', 'user-getuserid', 'pass-getuserid');
+    }
+
+    function updateUser() {
+        const id = document.getElementById('updateUserId').value;
+        if(!id) {
+            document.getElementById('out-updateuser').innerText = "⚠️ Error: Please enter a User ID.";
+            return;
+        }
+
+        const body = {};
+        const role = document.getElementById('updateUserRole').value;
+        const status = document.getElementById('updateUserStatus').value;
+
+        if (role) body.role = role;
+        if (status) body.status = status;
+
+        callApi(`/api/users/${id}`, 'PUT', body, 'out-updateuser', 'user-updateuser', 'pass-updateuser');
+    }
+
+    function removeUser() {
+        const id = document.getElementById('delUserId').value;
+        if(!id) {
+            document.getElementById('out-deluser').innerText = "⚠️ Error: Please enter a User ID.";
+            return;
+        }
+        callApi(`/api/users/${id}`, 'DELETE', null, 'out-deluser', 'user-deluser', 'pass-deluser');
+    }
+</script>
+</body>
+</html>
